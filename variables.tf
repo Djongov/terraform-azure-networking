@@ -5,6 +5,16 @@ variable "resource_group_name" {
   default     = null
 }
 
+variable "project_name" {
+  description = "Project name for the resources"
+  type        = string
+}
+
+variable "repo_name" {
+  description = "name of the repository"
+  type        = string
+  default = null
+}
 # Location for the resources, it will be used in naming and tagging of resources
 variable "location" {
   description = "Location for the resources"
@@ -30,4 +40,18 @@ variable "common_tags" {
   default = {}
 }
 
-# insert your module specific variables here
+variable "vnets" {
+  description = "List of vnets to create"
+  type        = map(object({
+    address_space       = list(string)
+    subnets             = list(object({
+      name            = string
+      address_prefix  = string
+      service_endpoints = optional(list(string))
+    }))
+    enable_ddos_protection = optional(bool)
+    enable_vm_protection   = optional(bool)
+    tags = optional(map(string))
+  }))
+  default     = {}
+}
